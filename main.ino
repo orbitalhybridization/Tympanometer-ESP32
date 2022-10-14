@@ -66,7 +66,8 @@ void loop() {
   
   // seal hits
   digitalWrite(SEAL_ALERT,HIGH);
-  digitalWrite(SEAL_LED,HIGH); // led  
+  digitalWrite(PIN_GREEN,255); // led  
+  digitalWrite(PIN_RED,0);
 
   // SAMPLING
 
