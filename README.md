@@ -1,4 +1,4 @@
-# Duke BME 503 Tympanometer Project
+# Duke BME 590 Tympanometer Project
 Repository for BME 503 Tympanometer Project (Team D)
 Includes Python and Arduino Code for Tympanometer Project 
 * note: Please make sure: 
