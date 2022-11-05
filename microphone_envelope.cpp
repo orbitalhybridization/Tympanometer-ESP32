@@ -5,6 +5,8 @@
 
   #define voltage_duration_pin   34
   #define ledPin   25
+  #define outputPin 26
+  #define seal_check_pin   39
   const int freq = 500;
   const int ledChannel = 0;
   const int resolution = 8;
@@ -24,7 +26,12 @@ void loop() {
   int pwm;
   float time;
   int voltage_duration = analogRead(voltage_duration_pin);
-  Serial.println(voltage_duration);
+  int voltage;
+  int output = analogRead(outputPin);
+  int seal_check = analogRead(seal_check_pin);
+  Serial.println(output);
+
+  if (seal_check > 1365){
 
   if (voltage_duration < 1365){
   t = 0;
@@ -38,8 +45,10 @@ void loop() {
   sound = 1/(sqrt(2*M_PI*variance))*(exp((-1* pow((t-0.5),2))/(2*variance)));  // Gaussian Function Centered around 0.5 sec
   pwm = int(255*sound);  // mapping this to pwm outputs
   ledcWrite(ledChannel, pwm); // Send via PWM
-  t = t + 0.002;  // Since max rate pwm can be written is 490 Hz
-  time = time + 2000;  //Sending output only every 2 ms.
+  voltage = int(4095*sound);  // mapping this to pwm outputs
+  dacWrite(outputPin, voltage);
+  t = t + 0.0002;
+  time = time + 200;  //Sending output only every 0.2 ms.
   }
   }
   }
@@ -56,8 +65,10 @@ void loop() {
   sound = 1/(sqrt(2*M_PI*variance))*(exp((-1* pow((t-1),2))/(2*variance)));  // Gaussian Function Centered around 1 sec
   pwm = int(255*sound);  // mapping this to pwm outputs
   ledcWrite(ledChannel, pwm); // Send via PWM
-  t = t + 0.002;  // Since max rate pwm can be written is 490 Hz
-  time = time + 2000;  //Sending output only every 2 ms.
+  voltage = int(4095*sound);  // mapping this to pwm outputs
+  dacWrite(outputPin, voltage);
+  t = t + 0.0002;
+  time = time + 200;  //Sending output only every 0.2 ms.
   }
   }
   }
@@ -74,10 +85,16 @@ void loop() {
   sound = 1/(sqrt(2*M_PI*variance))*(exp((-1* pow((t-1.5),2))/(2*variance)));  // Gaussian Function Centered around 1.5 sec
   pwm = int(255*sound);  // mapping this to pwm outputs
   ledcWrite(ledChannel, pwm); // Send via PWM
-  t = t + 0.002;  // Since max rate pwm can be written is 490 Hz
-  time = time + 2000;  //Sending output only every 2 ms.
+  voltage = int(4095*sound);  // mapping this to pwm outputs
+  dacWrite(outputPin, voltage);
+  t = t + 0.0002;
+  time = time + 200;  //Sending output only every 2 ms.
   }
   }
   }
+}
+else 
+ledcWrite(ledChannel, 0); // Send via PWM
+voltage = 0;
 }
 
